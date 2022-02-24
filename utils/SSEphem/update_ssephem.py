@@ -59,8 +59,7 @@ def IersUpdate():
 	try:
 		output = open('iers.tab','w')
 		finaldata = open('finals2000A.all','r')
-		for line in finaldata:
-			print(line)                
+		for line in finaldata:               
 			mj = line[7:15]
 			if len(line.split()) > 5:
 				c1 = line[18:27] # x pole
