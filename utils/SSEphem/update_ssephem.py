@@ -2,31 +2,31 @@ import os
 import numpy as np
 
 def LeapSecUpdate():
-	os.system('wget --no-proxy ftp://cddis.gsfc.nasa.gov/pub/products/iers/leapsec.dat')
-	#os.system('wget --no-proxy http://maia.usno.navy.mil/ser7/leapsec.dat')
+	os.system('wget https://raw.githubusercontent.com/astropy/astropy/main/astropy/utils/iers/data/Leap_Second.dat')
 	if os.access('leapsec.tab', os.F_OK):
 		os.system('mv leapsec.tab leapsec_old.tab')
 	try:
-		f = open('leapsec.dat','r')
+		f = open('Leap_Second.dat','r')
 		lines = f.readlines()
 		fo = open('leapsec.tab','w')
 		for line in lines:
-			cos = line.split()
-			if cos[1] == 'JAN':
-				date = cos[0]+' January 1 '
-			else:
-				date = cos[0]+' July 1    '
-			jd = float(cos[4])
-			leap = float(cos[6])
-			leap = int(np.around(leap))
-			nline = '    '+str(int(np.around(jd-2400000.5)))+'       '+date+'TAI-UTC = '+str(leap)+'.0\n'
-			fo.write(nline)
+			if not line.startswith("#"):
+				cos = line.split()
+				if cos[2] == '1':
+					date = cos[3]+' January 1 '
+				else:
+					date = cos[3]+' July 1  '
+				jd = float(cos[0])
+				leap = float(cos[4])
+				leap = int(np.around(leap))
+				nline = '    '+str(int(np.around(jd-2400000.5)))+'       '+date+'TAI-UTC = '+str(leap)+'.0\n'
+				fo.write(nline)
 		f.close()
 		fo.close()
-		os.system('rm leapsec.dat')
+		os.system('rm Leap_Second.dat')
 	except:
 		print 'No luck...'
-		os.system('rm leapsec.dat')
+		os.system('rm Leap_Second.dat')
 		os.system('mv leapsec_old.tab leapsec.tab')
 
 def SSEphemDownload():
@@ -53,7 +53,7 @@ def SSEphemDownload():
 def IersUpdate():
 	if os.access('finals2000A.data',os.F_OK):
 		os.system('mv finals2000A.data finals2000A_old.data')
-	os.system('wget --no-proxy ftp://cddis.gsfc.nasa.gov/pub/products/iers/finals2000A.data')
+	os.system('wget https://datacenter.iers.org/data/9/finals2000A.all')
 	#os.system('wget --no-proxy http://maia.usno.navy.mil/ser7/finals2000A.data')
 	if os.access('finals2000A.data',os.F_OK) == False:
 		print 'one'
