@@ -19,7 +19,7 @@ def LeapSecUpdate():
 				jd = float(cos[0])
 				leap = float(cos[4])
 				leap = int(np.around(leap))
-				nline = '    '+str(int(np.around(jd-2400000.5)))+'       '+date+'TAI-UTC = '+str(leap)+'.0\n'
+				nline = '    '+str(int(np.around(jd)))+'       '+date+'TAI-UTC = '+str(leap)+'.0\n'
 				fo.write(nline)
 		f.close()
 		fo.close()
