@@ -65,7 +65,7 @@ def IersUpdate():
 			os.system('mv iers.tab iers_old.tab')
 		try:
 			output = open('iers.tab','w')
-			finaldata = open('finals2000A.data','r')
+			finaldata = open('finals2000A.all','r')
 			for line in finaldata:
 				mj = line[7:15]
 				if len(line.split()) > 5:
