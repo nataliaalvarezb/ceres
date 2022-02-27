@@ -52,25 +52,32 @@ def SSEphemDownload():
 def IersUpdate():
 	if os.access('finals2000A.data',os.F_OK):
 		os.system('mv finals2000A.data finals2000A_old.data')
-	os.system('wget https://datacenter.iers.org/data/9/finals2000A.all')
+	#os.system('wget --no-proxy ftp://cddis.gsfc.nasa.gov/pub/products/iers/finals2000A.data')
 	#os.system('wget --no-proxy http://maia.usno.navy.mil/ser7/finals2000A.data')
-	if os.access('iers.tab',os.F_OK):
-		os.system('mv iers.tab iers_old.tab')
-	try:
-		output = open('iers.tab','w')
-		finaldata = open('finals2000A.all','r')
-		for line in finaldata:               
-			mj = line[7:15]
-			if len(line.split()) > 5:
-				c1 = line[18:27] # x pole
-				c2 = line[37:46] # y pole
-				c3 = line[58:68] #UT1-UTC
-				l  = ' '+mj+' '+c1+' '+c2+' '+c3+' '+'\n'
-				output.write(l)
-		finaldata.close()
-		output.close()
-	except:
-		print ('two')
-		print ('No Luck...')
-		if os.access('iers_old.tab',os.F_OK):
-			os.system('mv iers_old.tab iers.tab')
+	os.system('wget https://datacenter.iers.org/data/9/finals2000A.all')
+	if os.access('finals2000A.data',os.F_OK) == False:
+		print 'one'
+		print 'No Luck...'
+		os.system('mv finals2000A_old.data finals2000A.data')
+		pass
+	else:
+		if os.access('iers.tab',os.F_OK):
+			os.system('mv iers.tab iers_old.tab')
+		try:
+			output = open('iers.tab','w')
+			finaldata = open('finals2000A.data','r')
+			for line in finaldata:
+				mj = line[7:15]
+				if len(line.split()) > 5:
+					c1 = line[18:27]
+					c2 = line[37:46]
+					c3 = line[58:68]
+					l  = ' '+mj+' '+c1+' '+c2+' '+c3+' '+'\n'
+					output.write(l)
+			finaldata.close()
+			output.close()
+		except:
+			print 'two'
+			print 'No Luck...'
+			if os.access('iers_old.tab',os.F_OK):
+				os.system('mv iers_old.tab iers.tab')
